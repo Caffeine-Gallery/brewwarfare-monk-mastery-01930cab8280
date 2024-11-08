@@ -1,6 +1,7 @@
-import Char "mo:base/Char";
 import Hash "mo:base/Hash";
 import Int "mo:base/Int";
+import List "mo:base/List";
+import Order "mo:base/Order";
 import Stack "mo:base/Stack";
 
 import Text "mo:base/Text";
@@ -14,23 +15,26 @@ actor {
 
   private func initializeContent() {
     let defaultContent = [
-      ("talents", "Essential Talents for Brewmaster Monk:\n- Improved Vivify\n- Chi Wave\n- Tiger's Lust\n- Ring of Peace\n- Summon Black Ox Statue\n- Improved Celestial Brew\n- Bob and Weave\n- Improved Purifying Brew\n- Celestial Flames\n- Blackout Combo\n- High Tolerance\n- Exploding Keg\n\nClass Tree Highlights:\n- Generous Pour\n- Grace of the Crane\n- Fast Feet\n- Improved Roll\n- Close to Heart"),
+      ("talents", "Essential Talents for Brewmaster Monk:\n\nClass Tree:\n- Improved Vivify\n- Chi Wave\n- Tiger's Lust\n- Ring of Peace\n- Summon Black Ox Statue\n- Improved Celestial Brew\n- Bob and Weave\n- Improved Purifying Brew\n- Celestial Flames\n- Blackout Combo\n- High Tolerance\n- Exploding Keg\n\nMonk Tree Highlights:\n- Generous Pour\n- Grace of the Crane\n- Fast Feet\n- Improved Roll\n- Close to Heart\n- Touch of Death\n- Detox\n- Healing Elixir\n\nKey Talents Explanation:\n- Blackout Combo: Essential for single-target damage and mitigation\n- High Tolerance: Provides consistent damage reduction\n- Exploding Keg: Strong AOE damage and defensive cooldown"),
       
-      ("stats", "1. Stamina - Primary defensive stat\n2. Armor - Baseline physical damage reduction\n3. Agility - Increases attack power and armor\n4. Secondary Stats Priority:\n- Versatility - Best overall defensive and offensive stat\n- Mastery - Increases Stagger effectiveness\n- Critical Strike - Improves healing and damage\n- Haste - Reduces ability cooldowns and GCD"),
+      ("stats", "Stat Priority Guide:\n\nPrimary Stats:\n1. Stamina - Your most important defensive stat\n2. Armor - Base physical damage reduction\n3. Agility - Increases attack power and armor\n\nSecondary Stats (in order):\n1. Versatility\n- Increases damage done\n- Reduces damage taken\n- Best overall defensive stat\n\n2. Mastery\n- Increases Stagger effectiveness\n- Improves Elusive Brawler dodge chance\n\n3. Critical Strike\n- Improves healing received\n- Increases damage output\n- Affects Celestial Fortune healing\n\n4. Haste\n- Reduces global cooldown\n- Faster energy regeneration\n- More frequent Keg Smash casts\n\nGearing Strategy:\n- Aim for balanced secondary stats\n- Prioritize item level over perfect stats\n- Keep Versatility and Mastery roughly equal"),
       
-      ("single_target", "Primary Rotation:\n1. Keep Blackout Kick on cooldown (with Blackout Combo talent)\n2. Keg Smash on cooldown\n3. Breath of Fire when available\n4. Purifying Brew at high Stagger levels\n5. Celestial Brew for active mitigation\n6. Tiger Palm as filler\n\nKey Notes:\n- Maintain 100% uptime on Shuffle\n- Use Purifying Brew at Yellow or Red Stagger\n- Weave Celestial Brew between damage spikes"),
+      ("single_target", "Single Target Rotation:\n\nPriority List:\n1. Maintain Shuffle (100% uptime required)\n2. Keg Smash on cooldown\n3. Blackout Kick (with Blackout Combo)\n4. Breath of Fire\n5. Tiger Palm as filler\n\nDefensive Priorities:\n1. Keep Shuffle active at all times\n2. Use Purifying Brew at:\n   - Yellow Stagger: 50%+ health\n   - Red Stagger: Immediate priority\n3. Celestial Brew between damage spikes\n\nAdvanced Tips:\n- Pool energy for Keg Smash\n- Track Shuffle duration\n- Use Weapons of Order on pull\n- Save Purifying Brew charges for heavy damage\n\nOpener Sequence:\n1. Weapons of Order\n2. Keg Smash\n3. Breath of Fire\n4. Blackout Kick\n5. Establish rotation"),
       
-      ("aoe", "AOE Priority:\n1. Keg Smash on cooldown (hits up to 5 targets)\n2. Breath of Fire (especially with Charred Passions)\n3. Spinning Crane Kick for 3+ targets\n4. Rushing Jade Wind maintenance\n5. Exploding Keg for burst AOE threat\n\nKey Notes:\n- Maintain Shuffle uptime\n- Position mobs in Breath of Fire cone\n- Use Bonedust Brew to amplify AOE damage\n- Black Ox Statue for additional threat generation"),
+      ("aoe", "AOE Rotation Guide:\n\nPriority for 3+ Targets:\n1. Keg Smash on cooldown\n2. Breath of Fire\n3. Spinning Crane Kick\n4. Rushing Jade Wind\n5. Exploding Keg\n\nKey Mechanics:\n- Position mobs for Breath of Fire cone\n- Maintain Shuffle uptime\n- Use Black Ox Statue for threat\n- Bonedust Brew for damage amp\n\nCooldown Usage:\n1. Weapons of Order for burst\n2. Invoke Niuzao for damage\n3. Exploding Keg for control\n\nThreat Management:\n- Tab target for Keg Smash\n- Use Provoke strategically\n- Position Black Ox Statue centrally\n\nAdvanced Techniques:\n- Kite when necessary\n- Stack mobs efficiently\n- Use Ring of Peace for positioning"),
       
-      ("cooldowns", "Defensive Cooldowns:\n1. Fortifying Brew - 7min cooldown\n- 20% damage reduction\n- 20% max health increase\n- Use for heavy damage phases\n\n2. Celestial Brew - 1min cooldown\n- Absorb shield based on Purified damage\n- Stack Purifying Brew before use\n\n3. Purifying Brew - 2 charges\n- Removes 50% of Staggered damage\n- Use at Yellow/Red Stagger\n\n4. Zen Meditation - 5min cooldown\n- 60% damage reduction\n- Breaks on movement/attacks"),
+      ("cooldowns", "Defensive Cooldowns Guide:\n\nMajor Cooldowns:\n1. Fortifying Brew (7 min)\n- 20% damage reduction\n- 20% health increase\n- Use for heavy damage phases\n- Best paired with other defensives\n\n2. Celestial Brew (1 min)\n- Absorb shield scaling with Purified damage\n- Stack Purifying Brew before use\n- Save for predictable damage\n\n3. Zen Meditation (5 min)\n- 60% damage reduction\n- Breaks on movement/attacks\n- Use for magic damage spikes\n\nRotational Defensives:\n1. Purifying Brew\n- 2 charges\n- Removes 50% Stagger\n- Use at Yellow/Red Stagger\n\n2. Dampen Harm\n- 45% reduction to big hits\n- Good for predictable damage\n\nEmergency Buttons:\n1. Healing Elixir\n2. Health Stone\n3. Healthstone"),
       
-      ("utilities", "Utility Abilities:\n1. Ring of Peace\n- Area control\n- Mob positioning\n- Raid utility for mechanics\n\n2. Leg Sweep\n- AOE stun\n- Interrupt dangerous casts\n\n3. Transcendence\n- Position management\n- Cheese mechanics\n- Quick repositioning\n\n4. Roll/Chi Torpedo\n- Mobility\n- Mechanic dodging\n\n5. Provoke\n- Long-range taunt\n- Tank swap mechanics\n\n6. Spear Hand Strike\n- Interrupt\n- 15s cooldown")
+      ("utilities", "Utility Abilities Guide:\n\nMovement Abilities:\n1. Roll/Chi Torpedo\n- Quick positioning\n- Dodge mechanics\n- 2 charges baseline\n\n2. Transcendence\n- Place in safe spot\n- Transfer for mechanics\n- 45 sec cooldown\n\nCrowd Control:\n1. Ring of Peace\n- Displacement tool\n- Interrupt casts\n- Position control\n\n2. Leg Sweep\n- AOE stun (5 yards)\n- 5 second duration\n- 60 sec cooldown\n\nTank Utilities:\n1. Provoke\n- 40 yard range\n- Tank swaps\n- Snap threat\n\n2. Spear Hand Strike\n- Interrupt\n- 15 sec cooldown\n- Critical for casters\n\nRaid Utilities:\n1. Mystic Touch\n- 5% physical damage\n- Raid-wide benefit\n\n2. Summon Black Ox Statue\n- Additional threat\n- Mob positioning")
     ];
 
     for ((k, v) in defaultContent.vals()) {
       guideContent.put(k, v);
     };
   };
+
+  // Initialize content immediately
+  initializeContent();
 
   system func preupgrade() {
     guideEntriesStable := Iter.toArray(guideContent.entries());
