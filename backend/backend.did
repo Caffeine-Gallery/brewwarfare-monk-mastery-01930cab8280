@@ -1,0 +1,8 @@
+service : {
+  getAllSections: () -> (vec record {
+                               text;
+                               text;
+                             }) query;
+  getSection: (text) -> (opt text) query;
+  updateSection: (text, text) -> ();
+}
