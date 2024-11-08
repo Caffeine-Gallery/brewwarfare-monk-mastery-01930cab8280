@@ -1,29 +1,47 @@
+:root {
+    --primary-teal: #008080;
+    --light-teal: #E0F2F1;
+    --aquamarine: #7FFFD4;
+    --dark-teal: #004D4D;
+    --medium-teal: #20B2AA;
+}
+
 body {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: var(--light-teal);
+    color: var(--dark-teal);
 }
 
 .navbar {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: var(--primary-teal);
+    box-shadow: 0 2px 4px rgba(0,128,128,0.2);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--aquamarine);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white;
 }
 
 section {
     background-color: white;
     border-radius: 8px;
     padding: 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0,128,128,0.1);
     margin-bottom: 2rem;
+    border-left: 4px solid var(--aquamarine);
 }
 
 h2 {
-    color: #2c3e50;
+    color: var(--primary-teal);
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--aquamarine);
 }
 
 h4 {
-    color: #2c3e50;
+    color: var(--primary-teal);
     font-weight: 600;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -40,25 +58,33 @@ h4 {
 
 .content-section li {
     margin-bottom: 0.8rem;
+    color: var(--dark-teal);
 }
 
 .content-section p {
     margin-bottom: 0.8rem;
+    color: var(--dark-teal);
 }
 
 .card {
     border: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0,128,128,0.1);
     margin-bottom: 1.5rem;
+    border-left: 4px solid var(--medium-teal);
 }
 
 .card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eee;
+    background-color: var(--light-teal);
+    border-bottom: 1px solid var(--aquamarine);
     padding: 1rem 1.5rem;
 }
 
+.card-header h3 {
+    color: var(--primary-teal);
+}
+
 .spinner-border {
+    color: var(--primary-teal);
     width: 3rem;
     height: 3rem;
 }
@@ -75,4 +101,22 @@ h4 {
     .content-section {
         font-size: 0.95rem;
     }
+}
+
+/* Hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,128,128,0.2);
+}
+
+section:hover {
+    box-shadow: 0 6px 12px rgba(0,128,128,0.15);
+    transition: box-shadow 0.2s ease;
+}
+
+/* Selection color */
+::selection {
+    background-color: var(--aquamarine);
+    color: var(--dark-teal);
 }
