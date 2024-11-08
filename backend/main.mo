@@ -1,4 +1,7 @@
+import Char "mo:base/Char";
 import Hash "mo:base/Hash";
+import Int "mo:base/Int";
+import Stack "mo:base/Stack";
 
 import Text "mo:base/Text";
 import HashMap "mo:base/HashMap";
@@ -6,21 +9,22 @@ import Iter "mo:base/Iter";
 import Array "mo:base/Array";
 
 actor {
-  // Stable storage for guide sections
   private stable var guideEntriesStable : [(Text, Text)] = [];
-  
-  // HashMap to store guide content
   private var guideContent = HashMap.HashMap<Text, Text>(10, Text.equal, Text.hash);
 
-  // Initialize default content
   private func initializeContent() {
     let defaultContent = [
-      ("talents", "Recommended talents for Brewmaster Monk:\n- Tier 1: Chi Wave\n- Tier 2: Chi Torpedo\n- Tier 3: Spear Hand Strike"),
-      ("stats", "1. Versatility\n2. Mastery\n3. Critical Strike\n4. Haste"),
-      ("single_target", "1. Keg Smash on cooldown\n2. Breath of Fire\n3. Blackout Kick\n4. Tiger Palm as filler"),
-      ("aoe", "1. Keg Smash\n2. Breath of Fire\n3. Rushing Jade Wind\n4. Spinning Crane Kick"),
-      ("cooldowns", "1. Celestial Brew - 1 min cooldown\n2. Purifying Brew - 2 charges\n3. Fortifying Brew - 7 min cooldown"),
-      ("utilities", "1. Ring of Peace\n2. Leg Sweep\n3. Transcendence\n4. Roll")
+      ("talents", "Essential Talents for Brewmaster Monk:\n- Improved Vivify\n- Chi Wave\n- Tiger's Lust\n- Ring of Peace\n- Summon Black Ox Statue\n- Improved Celestial Brew\n- Bob and Weave\n- Improved Purifying Brew\n- Celestial Flames\n- Blackout Combo\n- High Tolerance\n- Exploding Keg\n\nClass Tree Highlights:\n- Generous Pour\n- Grace of the Crane\n- Fast Feet\n- Improved Roll\n- Close to Heart"),
+      
+      ("stats", "1. Stamina - Primary defensive stat\n2. Armor - Baseline physical damage reduction\n3. Agility - Increases attack power and armor\n4. Secondary Stats Priority:\n- Versatility - Best overall defensive and offensive stat\n- Mastery - Increases Stagger effectiveness\n- Critical Strike - Improves healing and damage\n- Haste - Reduces ability cooldowns and GCD"),
+      
+      ("single_target", "Primary Rotation:\n1. Keep Blackout Kick on cooldown (with Blackout Combo talent)\n2. Keg Smash on cooldown\n3. Breath of Fire when available\n4. Purifying Brew at high Stagger levels\n5. Celestial Brew for active mitigation\n6. Tiger Palm as filler\n\nKey Notes:\n- Maintain 100% uptime on Shuffle\n- Use Purifying Brew at Yellow or Red Stagger\n- Weave Celestial Brew between damage spikes"),
+      
+      ("aoe", "AOE Priority:\n1. Keg Smash on cooldown (hits up to 5 targets)\n2. Breath of Fire (especially with Charred Passions)\n3. Spinning Crane Kick for 3+ targets\n4. Rushing Jade Wind maintenance\n5. Exploding Keg for burst AOE threat\n\nKey Notes:\n- Maintain Shuffle uptime\n- Position mobs in Breath of Fire cone\n- Use Bonedust Brew to amplify AOE damage\n- Black Ox Statue for additional threat generation"),
+      
+      ("cooldowns", "Defensive Cooldowns:\n1. Fortifying Brew - 7min cooldown\n- 20% damage reduction\n- 20% max health increase\n- Use for heavy damage phases\n\n2. Celestial Brew - 1min cooldown\n- Absorb shield based on Purified damage\n- Stack Purifying Brew before use\n\n3. Purifying Brew - 2 charges\n- Removes 50% of Staggered damage\n- Use at Yellow/Red Stagger\n\n4. Zen Meditation - 5min cooldown\n- 60% damage reduction\n- Breaks on movement/attacks"),
+      
+      ("utilities", "Utility Abilities:\n1. Ring of Peace\n- Area control\n- Mob positioning\n- Raid utility for mechanics\n\n2. Leg Sweep\n- AOE stun\n- Interrupt dangerous casts\n\n3. Transcendence\n- Position management\n- Cheese mechanics\n- Quick repositioning\n\n4. Roll/Chi Torpedo\n- Mobility\n- Mechanic dodging\n\n5. Provoke\n- Long-range taunt\n- Tank swap mechanics\n\n6. Spear Hand Strike\n- Interrupt\n- 15s cooldown")
     ];
 
     for ((k, v) in defaultContent.vals()) {
@@ -28,7 +32,6 @@ actor {
     };
   };
 
-  // System functions for upgrades
   system func preupgrade() {
     guideEntriesStable := Iter.toArray(guideContent.entries());
   };
@@ -40,7 +43,6 @@ actor {
     };
   };
 
-  // Query calls
   public query func getSection(section : Text) : async ?Text {
     guideContent.get(section)
   };
@@ -49,7 +51,6 @@ actor {
     Iter.toArray(guideContent.entries())
   };
 
-  // Update calls
   public func updateSection(section : Text, content : Text) : async () {
     guideContent.put(section, content);
   };
